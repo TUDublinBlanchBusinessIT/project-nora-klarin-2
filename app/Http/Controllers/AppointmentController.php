@@ -51,4 +51,9 @@ class AppointmentController extends Controller
         return redirect()->route('appointments.index')->with('success', 'Appointment updated successfully!');
     }
 
+    public function destroy($id)
+    {
+        Appointment::findOrFail($id)->delete();
+        return redirect()->route('appointments.index')->with('success', 'Appointment deleted!');
+    }
 }

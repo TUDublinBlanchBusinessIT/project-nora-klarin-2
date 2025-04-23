@@ -9,6 +9,7 @@
             <th>Date</th>
             <th>Technician ID</th>
             <th>Status</th>
+            <th>Actions</th> {{-- New column header --}}
         </tr>
     </thead>
     <tbody>
@@ -20,10 +21,16 @@
                 <td>{{ $appointment->appointment_date }}</td>
                 <td>{{ $appointment->technician_id }}</td>
                 <td>{{ $appointment->status }}</td>
+                <td>
+                    <a href="{{ route('appointments.edit', $appointment->id) }}">Edit</a>
+
+                    <form action="{{ route('appointments.destroy', $appointment->id) }}" method="POST" style="display:inline;">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" onclick="return confirm('Delete this appointment?')">Delete</button>
+                    </form>
+                </td>
             </tr>
         @endforeach
     </tbody>
 </table>
-<td>
-    <a href="{{ route('appointments.edit', $appointment->id) }}">Edit</a>
-</td>
