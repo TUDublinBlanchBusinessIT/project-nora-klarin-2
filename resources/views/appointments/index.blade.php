@@ -24,3 +24,6 @@
         @endforeach
     </tbody>
 </table>
+<td>
+    <a href="{{ route('appointments.edit', $appointment->id) }}">Edit</a>
+</td>

@@ -36,4 +36,19 @@ class AppointmentController extends Controller
         // Redirect to the appointments listing or any page you want
         return redirect()->route('appointments.index');  // Or change to a view you want to redirect to
     }
+
+    public function edit($id)
+    {
+        $appointment = Appointment::findOrFail($id);
+        return view('appointments.edit', compact('appointment'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $appointment = Appointment::findOrFail($id);
+        $appointment->update($request->all());
+
+        return redirect()->route('appointments.index')->with('success', 'Appointment updated successfully!');
+    }
+
 }
