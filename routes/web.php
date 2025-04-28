@@ -19,3 +19,6 @@ Route::get('/', function () {
 
 
 Route::resource('customers', App\Http\Controllers\customersController::class);
+
+
+Route::resource('services', App\Http\Controllers\ServiceController::class);
