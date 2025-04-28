@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CustomerController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,7 +19,10 @@ Route::get('/', function () {
 });
 
 
-Route::resource('customers', App\Http\Controllers\customersController::class);
+Route::resource('customers', App\Http\Controllers\CustomerController::class);
 
 
 Route::resource('services', App\Http\Controllers\ServiceController::class);
+
+
+Route::resource('appointments', App\Http\Controllers\AppointmentController::class);

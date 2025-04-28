@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Models\customers;
+use App\Models\Customer;
 use App\Repositories\BaseRepository;
 
 /**
@@ -11,7 +11,7 @@ use App\Repositories\BaseRepository;
  * @version April 28, 2025, 12:48 pm UTC
 */
 
-class customersRepository extends BaseRepository
+class CustomerRepository extends BaseRepository
 {
     /**
      * @var array
@@ -38,6 +38,6 @@ class customersRepository extends BaseRepository
      **/
     public function model()
     {
-        return customers::class;
+        return Customer::class;
     }
 }

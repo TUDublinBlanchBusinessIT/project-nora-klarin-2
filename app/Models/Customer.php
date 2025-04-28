@@ -17,7 +17,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property string $email
  * @property string $phone
  */
-class customers extends Model
+class Customer extends Model
 {
     use SoftDeletes;
 
