@@ -2,22 +2,22 @@
 
 @section('content')
     <section class="content-header">
-        <h1>
-            customers
-        </h1>
+        <h1>Edit Customer</h1>
     </section>
     <div class="content">
-       @include('basic-template::common.errors')
-       <div class="box box-primary">
-           <div class="box-body">
-               <div class="row">
-                   {!! Form::model($customers, ['route' => ['customers.update', $customers->id], 'method' => 'patch']) !!}
+        @include('basic-template::common.errors') <!-- Or replace with a custom error block -->
 
-                        @include('customers.fields')
+        <div class="box box-primary">
+            <div class="box-body">
+                <div class="row">
+                {!! Form::model($customer, ['route' => ['customers.update', $customer->id], 'method' => 'patch']) !!}
 
-                   {!! Form::close() !!}
-               </div>
-           </div>
-       </div>
+                        
+                        @include('customers.fields') <!-- Ensure this file exists -->
+
+                    {!! Form::close() !!}
+                </div>
+            </div>
+        </div>
     </div>
 @endsection

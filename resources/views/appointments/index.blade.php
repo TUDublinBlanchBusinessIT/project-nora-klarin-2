@@ -25,13 +25,14 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($appointments as $appointment)
-                        <tr>
-                            <td>{{ $appointment->service->name }}</td>
-                            <td>{{ $appointment->customer->firstname }} {{ $appointment->customer->lastname }}</td>
-                            <td>{{ \Carbon\Carbon::parse($appointment->appointment_date)->format('d-m-Y H:i') }}</td> <!-- Format the date -->
-                        </tr>
-                        @endforeach
+                    @foreach($appointments as $appointment)
+                    <tr>
+                    <td>{{ $appointment->service->name }}</td>
+                    <td>{{ $appointment->customer ? $appointment->customer->firstname . ' ' . $appointment->customer->lastname : 'No customer' }}</td>
+                    <td>{{ \Carbon\Carbon::parse($appointment->appointment_date)->format('d-m-Y H:i') }}</td>
+                    </tr>
+                    @endforeach
+
                     </tbody>
                 </table>
             </div>

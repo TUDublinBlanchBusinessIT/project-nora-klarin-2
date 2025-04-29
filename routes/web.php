@@ -18,6 +18,19 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth'])->name('dashboard');
+
+require __DIR__.'/auth.php';
+
+
+Route::get('/', function () {
+    return view('welcome');
+});
+
+Route::resource('customers', CustomerController::class);
+
 
 Route::resource('customers', App\Http\Controllers\CustomerController::class);
 
@@ -26,3 +39,13 @@ Route::resource('services', App\Http\Controllers\ServiceController::class);
 
 
 Route::resource('appointments', App\Http\Controllers\AppointmentController::class);
+
+Route::post('/logout', function () {
+    Auth::logout();
+    request()->session()->invalidate();
+    request()->session()->regenerateToken();
+    return redirect('/register'); // 👈 Redirect to registration page
+})->name('logout');
+
+
+
