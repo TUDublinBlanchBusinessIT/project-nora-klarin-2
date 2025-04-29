@@ -1,23 +1,18 @@
 @extends('layouts.app')
 
 @section('content')
-    <section class="content-header">
-        <h1 class="pull-left">Services</h1>
-        <h1 class="pull-right">
-           <a class="btn btn-primary pull-right" style="margin-top: -10px;margin-bottom: 5px" href="{!! route('services.create') !!}">Add New</a>
-        </h1>
-    </section>
-    <div class="content">
-        <div class="clearfix"></div>
+<h1>Our Services</h1>
+@if($services->isEmpty())
+  <p>No services available yet.</p>
+@else
+  <ul>
+    @foreach($services as $service)
+      <li>{{ $service->name }} — €{{ $service->price }}</li>
+    @endforeach
+  </ul>
+@endif
 
-        @include('flash::message')
-
-        <div class="clearfix"></div>
-        <div class="box box-primary">
-            <div class="box-body">
-                    @include('services.table')
-            </div>
-        </div>
-    </div>
+@can('admin')
+  <a href="{{ route('services.create') }}" class="btn btn-primary">Add New Service</a>
+@endcan
 @endsection
-

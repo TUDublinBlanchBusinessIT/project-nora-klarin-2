@@ -1,51 +1,58 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\AppointmentController;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
+// Public welcome
+Route::get('/', fn() => view('welcome'))->name('home');
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
-
+// Auth routes (Breeze/Jetstream)
 require __DIR__.'/auth.php';
 
-
-Route::get('/', function () {
-    return view('welcome');
-});
-
-Route::resource('customers', CustomerController::class);
-
-
-Route::resource('customers', App\Http\Controllers\CustomerController::class);
-
-
-Route::resource('services', App\Http\Controllers\ServiceController::class);
-
-
-Route::resource('appointments', App\Http\Controllers\AppointmentController::class);
-
+// Logout
 Route::post('/logout', function () {
     Auth::logout();
-    request()->session()->invalidate();
-    request()->session()->regenerateToken();
-    return redirect('/register'); // 👈 Redirect to registration page
+    session()->invalidate();
+    session()->regenerateToken();
+    return redirect('/');
 })->name('logout');
 
+// Customer area (any logged-in user with role customer)
+Route::middleware(['auth'])->group(function () {
+    // Customer dashboard
+    Route::get('/customer/dashboard', [CustomerController::class, 'dashboard'])
+    ->middleware(['auth'])
+    ->name('dashboard');
 
+    // Browse services
+    Route::get('/services', [ServiceController::class, 'index'])
+         ->name('services.index');
 
+    // Book an appointment
+    Route::get('/appointments/create', [AppointmentController::class, 'create'])
+         ->name('appointments.create');
+    Route::post('/appointments', [AppointmentController::class, 'store'])
+         ->name('appointments.store');
+
+    // My appointments
+    Route::get('/my-appointments', [AppointmentController::class, 'myAppointments'])
+         ->name('appointments.mine');
+});
+
+// Admin area (only role=admin)
+Route::middleware(['auth','admin'])->prefix('admin')->group(function () {
+    Route::get('/dashboard', [AdminController::class, 'dashboard'])
+         ->name('admin.dashboard');
+
+    // Admin CRUD
+    Route::resource('services', ServiceController::class)
+         ->except(['show']);
+    Route::resource('appointments', AppointmentController::class)
+         ->except(['create','store','show','edit','update']);
+    Route::resource('customers', CustomerController::class)
+         ->except(['show']);
+});

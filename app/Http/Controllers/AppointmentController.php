@@ -2,174 +2,60 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\CreateAppointmentRequest;
-use App\Http\Requests\UpdateAppointmentRequest;
-use App\Repositories\AppointmentRepository;
-use App\Http\Controllers\AppBaseController;
-use Illuminate\Http\Request;
-use Flash;
-use Response;
+use App\Models\Appointment;
 use App\Models\Service;
-use App\Models\Customer;
+use Illuminate\Http\Request;
 
-class AppointmentController extends AppBaseController
+class AppointmentController extends Controller
 {
-    /** @var AppointmentRepository $appointmentRepository*/
-    private $appointmentRepository;
-
-    public function __construct(AppointmentRepository $appointmentRepo)
-    {
-        $this->appointmentRepository = $appointmentRepo;
-    }
-
-    /**
-     * Display a listing of the Appointment.
-     *
-     * @param Request $request
-     *
-     * @return Response
-     */
-    public function index(Request $request)
-    {
-        $appointments = $this->appointmentRepository->all();
-
-        return view('appointments.index')
-            ->with('appointments', $appointments);
-    }
-
-    /**
-     * Show the form for creating a new Appointment.
-     *
-     * @return Response
-     */
+    // Customer: Show booking form
     public function create()
     {
-        $services = Service::all(); 
-    
+        $services = Service::all();
         return view('appointments.create', compact('services'));
     }
 
-    /**
-     * Store a newly created Appointment in storage.
-     *
-     * @param CreateAppointmentRequest $request
-     *
-     * @return Response
-     */
-    public function store(CreateAppointmentRequest $request)
+    // Customer: Store booking
+    public function store(Request $request)
     {
-        // Validate the inputs
         $request->validate([
-            'service_id' => 'required|exists:services,id',
-            'customer_name' => 'required|string|max:255',
-            'appointment_date' => 'required|date', // Validate the date
+            'service_id'       => 'required|exists:services,id',
+            'appointment_date' => 'required|date|after:now',
         ]);
-    
-        // Find or create the customer based on the name
-        $customer = Customer::firstOrCreate(['firstname' => $request->customer_name]);
-    
-        // Create the appointment and associate it with the service and customer
-        $appointment = $this->appointmentRepository->create([
-            'service_id' => $request->service_id,
-            'customer_id' => $customer->id,
-            'appointment_date' => $request->appointment_date,  // Store the appointment date
-        ]);
-    
-        Flash::success('Appointment saved successfully.');
-    
-        return redirect(route('appointments.index'));
-    }
-    
-    
 
-    /**
-     * Display the specified Appointment.
-     *
-     * @param int $id
-     *
-     * @return Response
-     */
-    public function show($id)
-    {
-        $appointment = $this->appointmentRepository->find($id);
+        auth()->user()->appointments()->create($request->only([
+            'service_id','appointment_date'
+        ]));
 
-        if (empty($appointment)) {
-            Flash::error('Appointment not found');
-
-            return redirect(route('appointments.index'));
-        }
-
-        return view('appointments.show')->with('appointment', $appointment);
+        return redirect()->route('appointments.mine')
+                         ->with('success','Appointment booked!');
     }
 
-    /**
-     * Show the form for editing the specified Appointment.
-     *
-     * @param int $id
-     *
-     * @return Response
-     */
-    public function edit($id)
+    // Customer: List own appointments
+    public function myAppointments()
     {
-        $appointment = $this->appointmentRepository->find($id);
+        $appointments = auth()->user()->appointments()
+            ->with('service')
+            ->orderBy('appointment_date','desc')
+            ->get();
 
-        if (empty($appointment)) {
-            Flash::error('Appointment not found');
-
-            return redirect(route('appointments.index'));
-        }
-
-        return view('appointments.edit')->with('appointment', $appointment);
+        return view('appointments.my', compact('appointments'));
     }
 
-    /**
-     * Update the specified Appointment in storage.
-     *
-     * @param int $id
-     * @param UpdateAppointmentRequest $request
-     *
-     * @return Response
-     */
-    public function update($id, UpdateAppointmentRequest $request)
+    // Admin: List all
+    public function index()
     {
-        $appointment = $this->appointmentRepository->find($id);
+        $appointments = Appointment::with(['user','service'])
+                                   ->latest()
+                                   ->get();
 
-        if (empty($appointment)) {
-            Flash::error('Appointment not found');
-
-            return redirect(route('appointments.index'));
-        }
-
-        $appointment = $this->appointmentRepository->update($request->all(), $id);
-
-        Flash::success('Appointment updated successfully.');
-
-        return redirect(route('appointments.index'));
+        return view('admin.appointments.index', compact('appointments'));
     }
 
-    /**
-     * Remove the specified Appointment from storage.
-     *
-     * @param int $id
-     *
-     * @throws \Exception
-     *
-     * @return Response
-     */
-    public function destroy($id)
+    // Admin: Delete
+    public function destroy(Appointment $appointment)
     {
-        $appointment = $this->appointmentRepository->find($id);
-
-        if (empty($appointment)) {
-            Flash::error('Appointment not found');
-
-            return redirect(route('appointments.index'));
-        }
-
-        $this->appointmentRepository->delete($id);
-
-        Flash::success('Appointment deleted successfully.');
-
-        return redirect(route('appointments.index'));
+        $appointment->delete();
+        return back()->with('success','Appointment removed.');
     }
 }
