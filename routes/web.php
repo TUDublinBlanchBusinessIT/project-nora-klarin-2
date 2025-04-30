@@ -6,7 +6,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\AppointmentController;
-
+use App\Http\Controllers\TechnicianController;
 
 Route::get('/', fn() => view('welcome'))->name('home');
 
@@ -51,4 +51,6 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
          ->except(['create', 'store', 'show']);    
     Route::resource('customers', CustomerController::class)
          ->except(['show']);
+
+        Route::resource('technicians', TechnicianController::class);
 });

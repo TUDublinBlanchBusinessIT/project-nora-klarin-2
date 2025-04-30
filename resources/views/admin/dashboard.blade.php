@@ -15,6 +15,8 @@
   </a>
 </div>
 
+<a class="nav-link" href="{{ route('technicians.index') }}">Manage Technicians</a>
+
 <h2>Latest 5 Appointments</h2>
 <ul>
   @foreach($latestAppointments as $appt)

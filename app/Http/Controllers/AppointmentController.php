@@ -12,22 +12,28 @@ class AppointmentController extends Controller
     {
         $services = Service::all();
         return view('appointments.create', compact('services'));
+        $technicians = Technician::all();
+        return view('appointments.create', compact('technicians'));
     }
 
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'service_id'       => 'required|exists:services,id',
             'appointment_date' => 'required|date|after:now',
+            'technician_id'    => 'nullable|exists:technicians,id',
         ]);
-
-        auth()->user()->appointments()->create($request->only([
-            'service_id','appointment_date'
-        ]));
-
+    
+        auth()->user()->appointments()->create([
+            'service_id'       => $validated['service_id'],
+            'appointment_date' => $validated['appointment_date'],
+            'technician_id'    => $validated['technician_id'] ?? null, // optional
+        ]);
+    
         return redirect()->route('appointments.mine')
-                         ->with('success','Appointment booked!');
+                         ->with('success', 'Appointment booked!');
     }
+    
 
     public function myAppointments()
     {

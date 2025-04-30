@@ -17,4 +17,19 @@
 
   <button type="submit">Book Now</button>
 </form>
+
+<div class="mt-4">
+    <x-label for="technician_id" :value="__('Preferred Technician (optional)')" />
+    <select name="technician_id" id="technician_id" class="form-select">
+        <option value="">No preference</option>
+        @foreach($technicians as $technician)
+            <option value="{{ $technician->id }}" {{ old('technician_id') == $technician->id ? 'selected' : '' }}>
+                {{ $technician->name }}
+            </option>
+        @endforeach
+    </select>
+</div>
+
 @endsection
+
+

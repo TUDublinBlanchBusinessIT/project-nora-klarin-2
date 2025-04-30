@@ -24,6 +24,7 @@
           <td>{{ $appt->user->name }}</td>
           <td>{{ $appt->service->name }}</td>
           <td>{{ \Carbon\Carbon::parse($appt->appointment_date)->format('d M Y, H:i') }}</td>
+          <td>{{ $appointment->technician ? $appointment->technician->name : 'No preference' }}</td>
           <td>
             <a href="{{ route('appointments.edit', $appt) }}" class="btn btn-sm btn-primary">Edit</a>
             <form action="{{ route('appointments.destroy', $appt) }}" method="POST" class="d-inline">
