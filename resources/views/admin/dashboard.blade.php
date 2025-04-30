@@ -9,6 +9,12 @@
   <li>Total Services: {{ $servicesCount }}</li>
 </ul>
 
+<div class="mb-4">
+  <a href="{{ route('appointments.index') }}" class="btn btn-secondary">
+    Manage All Appointments
+  </a>
+</div>
+
 <h2>Latest 5 Appointments</h2>
 <ul>
   @foreach($latestAppointments as $appt)
