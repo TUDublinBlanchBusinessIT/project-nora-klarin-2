@@ -62,24 +62,32 @@ class AppointmentController extends Controller
     {
         $services = Service::all();
         $users = User::where('role', 'customer')->get();
-        return view('admin.appointments.edit', compact('appointment', 'services', 'users'));
+        $technicians = Technician::orderBy('name')->get();
+        return view('admin.appointments.edit', compact('appointment', 'services', 'users', 'technicians'));
     }
 
     public function update(Request $request, Appointment $appointment)
     {
-        $request->validate([
+        $request->merge(['technician_id' => $request->technician_id ?: null]);
+
+        $data = $request->validate([
             'service_id'       => 'required|exists:services,id',
             'user_id'          => 'required|exists:users,id',
             'appointment_date' => 'required|date|after:now',
+            'technician_id'    => 'nullable|exists:technicians,id',
         ]);
-
-        $appointment->update($request->only([
-            'service_id','user_id','appointment_date'
-        ]));
-
+    
+        $appointment->update([
+            'service_id'       => $data['service_id'],
+            'user_id'          => $data['user_id'],
+            'appointment_date' => $data['appointment_date'],
+            'technician_id'    => $data['technician_id'] ?? null,
+        ]);
+    
         return redirect()->route('appointments.index')
                          ->with('success', 'Appointment updated.');
     }
+    
 
     public function destroy(Appointment $appointment)
     {

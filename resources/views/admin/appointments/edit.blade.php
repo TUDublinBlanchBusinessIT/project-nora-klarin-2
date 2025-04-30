@@ -5,9 +5,8 @@
   <h1>Edit Appointment #{{ $appointment->id }}</h1>
 
   <form action="{{ route('appointments.update', $appointment) }}" method="POST">
-    @csrf
+  @csrf
     @method('PUT')
-
     <div class="mb-3">
       <label for="user_id" class="form-label">Customer</label>
       <select name="user_id" id="user_id" class="form-control" required>
@@ -40,6 +39,19 @@
              class="form-control"
              value="{{ \Carbon\Carbon::parse($appointment->appointment_date)->format('Y-m-d\TH:i') }}"
              required>
+    </div>
+
+    <div class="mb-3">
+      <label for="technician_id" class="form-label">Assigned Technician</label>
+      <select name="technician_id" id="technician_id" class="form-control">
+        <option value="">No preference</option>
+        @foreach($technicians as $tech)
+          <option value="{{ $tech->id }}"
+            {{ $appointment->technician_id == $tech->id ? 'selected' : '' }}>
+            {{ $tech->name }}
+          </option>
+        @endforeach
+      </select>
     </div>
 
     <button type="submit" class="btn btn-success">Save Changes</button>
