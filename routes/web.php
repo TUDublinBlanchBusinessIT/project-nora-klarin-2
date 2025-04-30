@@ -7,6 +7,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\TechnicianController;
+use App\Http\Controllers\ReviewController;
 
 Route::get('/', fn() => view('welcome'))->name('home');
 
@@ -49,3 +50,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::resource('customers', CustomerController::class)->except(['show']);
     Route::resource('technicians', TechnicianController::class);
 });
+
+Route::post('/reviews', [ReviewController::class, 'store'])->name('reviews.store');
+
+

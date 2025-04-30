@@ -104,7 +104,7 @@ class AppointmentController extends Controller
         ->orderBy('appointment_date')
         ->get();
     
-    $past = Appointment::with('service', 'technician')
+    $past = Appointment::with('service', 'technician','technician_reviews')
         ->where('user_id', auth()->id())
         ->where('appointment_date', '<', now())
         ->orderByDesc('appointment_date')
