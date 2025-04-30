@@ -29,26 +29,6 @@
         </div>
     </div>
 
-    <h2 class="mb-3">Our Services</h2>
-    <div class="card">
-        <div class="card-body">
-            <table class="table table-bordered table-striped">
-                <thead class="thead-light">
-                    <tr>
-                        <th>Service</th>
-                        <th>Price (€)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($services as $service)
-                        <tr>
-                            <td>{{ $service->name }}</td>
-                            <td>€{{ number_format($service->price, 2) }}</td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
     </div>
 </div>
 @endsection

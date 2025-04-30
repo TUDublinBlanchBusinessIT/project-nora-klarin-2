@@ -40,17 +40,12 @@ Route::middleware(['auth'])->group(function () {
          ->name('appointments.mine');
 });
 
+Route::resource('services', ServiceController::class)->except(['show']);
+
 
 Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
-    Route::get('/dashboard', [AdminController::class, 'dashboard'])
-         ->name('admin.dashboard');
-
-    Route::resource('services', ServiceController::class)
-         ->except(['show']);
-         Route::resource('appointments', AppointmentController::class)
-         ->except(['create', 'store', 'show']);    
-    Route::resource('customers', CustomerController::class)
-         ->except(['show']);
-
-        Route::resource('technicians', TechnicianController::class);
+    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+    Route::resource('appointments', AppointmentController::class)->except(['create', 'store', 'show']);
+    Route::resource('customers', CustomerController::class)->except(['show']);
+    Route::resource('technicians', TechnicianController::class);
 });

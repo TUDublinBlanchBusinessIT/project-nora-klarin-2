@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\Appointment;
 use App\Models\Service;
 use App\Models\User;
+use App\Models\Technician;
 use Illuminate\Http\Request;
 
 class AppointmentController extends Controller
@@ -11,10 +12,11 @@ class AppointmentController extends Controller
     public function create()
     {
         $services = Service::all();
-        return view('appointments.create', compact('services'));
         $technicians = Technician::all();
-        return view('appointments.create', compact('technicians'));
+ 
+        return view('appointments.create', compact('services', 'technicians'));
     }
+    
 
     public function store(Request $request)
     {

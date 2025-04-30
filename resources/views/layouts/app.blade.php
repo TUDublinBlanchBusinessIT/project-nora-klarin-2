@@ -4,28 +4,67 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Beautician Service</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"></head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-<body class="bg-gray-100 text-gray-800">
+</head>
+<body class="bg-light text-dark">
 
-    <nav class="bg-white shadow p-4 mb-6">
-        <div class="container mx-auto flex justify-between items-center">
-            <a href="/" class="text-xl font-bold">Beautician Service</a>
-            <div>
-                @auth
-                    <a href="{{ route('logout') }}"
-                       onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
-                       class="text-blue-600 hover:underline">Logout</a>
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm mb-5">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{{ auth()->check() && auth()->user()->role == 'customer' ? route('dashboard') : (auth()->check() && auth()->user()->role == 'admin' ? route('admin.dashboard') : '/') }}">
+                Beautician Service
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    @auth
+                        @if(Auth::user()->role == 'customer')
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('dashboard') }}">Dashboard</a>
+                                <a class="nav-link" href="{{ route('services.index') }}">Services</a>
+                            </li>
+                        @endif
 
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="hidden">
-                        @csrf
-                    </form>
-                @endauth
+                        @if(Auth::user()->role == 'admin')
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('admin.dashboard') }}">Admin Dashboard</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Admin Options
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <li><a class="dropdown-item" href="{{ route('technicians.index') }}">Manage Technicians</a></li>
+                                    <li><a class="dropdown-item" href="{{ route('appointments.index') }}">Manage Appointments</a></li>
+                                    <li><a class="dropdown-item" href="{{ route('customers.index') }}">Manage Customers</a></li>
+                                    <a class="nav-link" href="{{ route('services.index') }}">Services</a>
+                                </ul>
+                            </li>
+                        @endif
+                       
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                @csrf
+                            </form>
+                        </li>
+                    @else
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('login') }}">Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('register') }}">Register</a>
+                        </li>
+                    @endauth
+                </ul>
             </div>
         </div>
     </nav>
 
-    <main class="container mx-auto px-4">
+    <main class="container">
         @yield('content')
     </main>
 

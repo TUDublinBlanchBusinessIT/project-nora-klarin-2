@@ -8,20 +8,17 @@ use App\Models\Appointment;
 
 class ServiceController extends Controller
 {
-    // Customer & Admin: List
     public function index()
     {
         $services = Service::all();
         return view('services.index', compact('services'));
     }
-
-    // Admin: Show form
+    
     public function create()
     {
         return view('services.create');
     }
 
-    // Admin: Store new
     public function store(Request $request)
     {
         $request->validate([
@@ -34,7 +31,7 @@ class ServiceController extends Controller
                          ->with('success','Service added.');
     }
 
-    // Admin: Edit & Update
+
     public function edit(Service $service)
     {
         return view('services.edit', compact('service'));
