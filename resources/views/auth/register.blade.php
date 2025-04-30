@@ -1,91 +1,54 @@
-<x-guest-layout>
-    <x-auth-card>
-        <x-slot name="logo">
-            <a href="/">
-                <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
-            </a>
-        </x-slot>
+@extends('layouts.app')
 
-        <!-- Validation Errors -->
-        <x-auth-validation-errors class="mb-4" :errors="$errors" />
+@section('content')
+<div class="container my-5">
+    <h2 class="text-center mb-4">Register</h2>
 
-        <form method="POST" action="{{ route('register') }}">
-            @csrf
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <form method="POST" action="{{ route('register') }}">
+                        @csrf
 
-            <div>
-                <x-label for="name" :value="__('Name')" />
-                <x-input id="name"
-                         class="block mt-1 w-full"
-                         type="text"
-                         name="name"
-                         :value="old('name')"
-                         required autofocus />
-            </div>
+                        <div class="form-group mb-3">
+                            <label for="name">Name</label>
+                            <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name" value="{{ old('name') }}" required autofocus>
+                            @error('name')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
 
-            <div class="mt-4">
-                <x-label for="email" :value="__('Email')" />
-                <x-input id="email"
-                         class="block mt-1 w-full"
-                         type="email"
-                         name="email"
-                         :value="old('email')"
-                         required />
-            </div>
+                        <div class="form-group mb-3">
+                            <label for="email">Email address</label>
+                            <input type="email" class="form-control @error('email') is-invalid @enderror" id="email" name="email" value="{{ old('email') }}" required>
+                            @error('email')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
 
-            <div class="mt-4">
-                <x-label for="password" :value="__('Password')" />
-                <x-input id="password"
-                         class="block mt-1 w-full"
-                         type="password"
-                         name="password"
-                         required autocomplete="new-password" />
-            </div>
+                        <div class="form-group mb-3">
+                            <label for="password">Password</label>
+                            <input type="password" class="form-control @error('password') is-invalid @enderror" id="password" name="password" required>
+                            @error('password')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
 
-            <div class="mt-4">
-                <x-label for="password_confirmation" :value="__('Confirm Password')" />
-                <x-input id="password_confirmation"
-                         class="block mt-1 w-full"
-                         type="password"
-                         name="password_confirmation"
-                         required />
-            </div>
+                        <div class="form-group mb-3">
+                            <label for="password_confirmation">Confirm Password</label>
+                            <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" required>
+                        </div>
 
-            <div class="mt-4">
-                <x-label for="role" :value="__('Register as')" />
-                <div class="flex space-x-4 mt-2">
-                    <label class="inline-flex items-center">
-                        <input type="radio"
-                               name="role"
-                               value="customer"
-                               class="form-radio text-indigo-600"
-                               {{ old('role', 'customer') === 'customer' ? 'checked' : '' }}>
-                        <span class="ml-2">Customer</span>
-                    </label>
+                        <button type="submit" class="btn btn-primary w-100">Register</button>
+                    </form>
 
-                    <label class="inline-flex items-center">
-                        <input type="radio"
-                               name="role"
-                               value="admin"
-                               class="form-radio text-indigo-600"
-                               {{ old('role') === 'admin' ? 'checked' : '' }}>
-                        <span class="ml-2">Employee</span>
-                    </label>
+                    <div class="mt-3 text-center">
+                        <a href="{{ route('login') }}">Already have an account? Login here</a>
+                    </div>
                 </div>
-                @error('role')
-                    <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-                @enderror
             </div>
-
-            <div class="flex items-center justify-end mt-6">
-                <a class="underline text-sm text-gray-600 hover:text-gray-900"
-                   href="{{ route('login') }}">
-                    {{ __('Already registered?') }}
-                </a>
-
-                <x-button class="ml-4">
-                    {{ __('Register') }}
-                </x-button>
-            </div>
-        </form>
-    </x-auth-card>
-</x-guest-layout>
+        </div>
+    </div>
+</div>
+@endsection
