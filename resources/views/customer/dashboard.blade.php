@@ -48,6 +48,7 @@
                                     Technician: <em>{{ $appointment->technician ? $appointment->technician->name : 'No preference' }}</em>
                                 </div>
                             </div>
+                            @if($appointment->technician)
 
                             <p class="mb-2"><strong>Technician avg rating:</strong> {{ number_format($appointment->technician->averageRating(), 1) }} ★</p>
 
@@ -56,16 +57,28 @@
                                     @csrf
                                     <input type="hidden" name="appointment_id" value="{{ $appointment->id }}">
                                     <input type="hidden" name="technician_id" value="{{ $appointment->technician_id }}">
+                                    
+                                    <fieldset class="starability-basic">
+                                    <legend class="sr-only">Rating</legend>
 
-                                    <label for="rating">Rating</label>
-                                    <select name="rating" required class="form-select mb-2">
-                                        <option value="">Choose rating</option>
-                                        @for($i=5; $i>=1; $i--)
-                                            <option value="{{ $i }}">{{ $i }} ★</option>
-                                        @endfor
-                                    </select>
+                                    <input type="radio" id="rate5-{{ $appointment->id }}" name="rating" value="5" required />
+                                    <label for="rate5-{{ $appointment->id }}" title="Amazing">5 stars</label>
 
-                                    <label for="comment">Comment (optional)</label>
+                                    <input type="radio" id="rate4-{{ $appointment->id }}" name="rating" value="4" />
+                                    <label for="rate4-{{ $appointment->id }}" title="Very good">4 stars</label>
+
+                                    <input type="radio" id="rate3-{{ $appointment->id }}" name="rating" value="3" />
+                                    <label for="rate3-{{ $appointment->id }}" title="Average">3 stars</label>
+
+                                    <input type="radio" id="rate2-{{ $appointment->id }}" name="rating" value="2" />
+                                    <label for="rate2-{{ $appointment->id }}" title="Not good">2 stars</label>
+
+                                    <input type="radio" id="rate1-{{ $appointment->id }}" name="rating" value="1" />
+                                    <label for="rate1-{{ $appointment->id }}" title="Terrible">1 star</label>
+                                  </fieldset>
+
+
+                                    <label for="comment">Comment</label>
                                     <textarea name="comment" class="form-control mb-2"></textarea>
 
                                     <button class="btn btn-primary btn-sm">Submit Review</button>
@@ -73,6 +86,7 @@
                             @else
                                 <p><strong>Your review:</strong> {{ $appointment->review->rating }} ★ <br> {{ $appointment->review->comment }}</p>
                             @endif
+                          @endif
                         </li>
                     @endforeach
                 </ul>

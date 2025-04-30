@@ -848,6 +848,10 @@ select {
 .shrink-0 {
   flex-shrink: 0;
 }
+.starability-basic label:before {
+  content: "\2605";
+  font-family: FontAwesome, serif;
+}
 .origin-top {
   transform-origin: top;
 }

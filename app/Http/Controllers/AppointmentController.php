@@ -73,7 +73,7 @@ class AppointmentController extends Controller
         $data = $request->validate([
             'service_id'       => 'required|exists:services,id',
             'user_id'          => 'required|exists:users,id',
-            'appointment_date' => 'required|date|after:now',
+            'appointment_date' => 'required|date',
             'technician_id'    => 'nullable|exists:technicians,id',
         ]);
     

@@ -26,9 +26,9 @@
           <td>{{ $appt->service->name }}</td>
           <td>{{ \Carbon\Carbon::parse($appt->appointment_date)->format('d M Y, H:i') }}</td>
           <td>{{ $appt->technician ? $appt->technician->name : 'No preference' }}</td>
-          @if($appointment->technician)
+          @if($appt->technician)  {{-- Change $appointment to $appt --}}
            <br>
-           <small>Avg rating: {{ number_format($appointment->technician->averageRating(), 1) }} ★</small>
+           <small>Avg rating: {{ number_format($appt->technician->averageRating(), 1) }} ★</small>
           @endif
          <td>
             <a href="{{ route('appointments.edit', $appt) }}" class="btn btn-sm btn-primary">Edit</a>
