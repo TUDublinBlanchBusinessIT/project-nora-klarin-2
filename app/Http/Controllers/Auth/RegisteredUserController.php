@@ -34,21 +34,30 @@ class RegisteredUserController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'name'     => 'required|string|max:255',
+            'email'    => 'required|string|email|max:255|unique:users',
+            'password' => 'required|confirmed|min:8',
+            'role'     => 'required|in:customer,admin',
         ]);
+        
 
         $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
+            'name'     => $request->name,
+            'email'    => $request->email,
             'password' => Hash::make($request->password),
+            'role'     => $request->role,   // ← store role
         ]);
+        
 
         event(new Registered($user));
 
         Auth::login($user);
 
-        return redirect(RouteServiceProvider::HOME);
+        if ($user->role === 'admin') {
+            return redirect()->route('admin.dashboard'); // Redirect to admin dashboard
+        }
+    
+        return redirect()->route('customer.dashboard'); // Redirect to customer dashboard (or your desired route)
     }
+
 }

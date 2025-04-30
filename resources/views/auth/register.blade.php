@@ -12,41 +12,73 @@
         <form method="POST" action="{{ route('register') }}">
             @csrf
 
-            <!-- Name -->
             <div>
                 <x-label for="name" :value="__('Name')" />
-
-                <x-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus />
+                <x-input id="name"
+                         class="block mt-1 w-full"
+                         type="text"
+                         name="name"
+                         :value="old('name')"
+                         required autofocus />
             </div>
 
-            <!-- Email Address -->
             <div class="mt-4">
                 <x-label for="email" :value="__('Email')" />
-
-                <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required />
+                <x-input id="email"
+                         class="block mt-1 w-full"
+                         type="email"
+                         name="email"
+                         :value="old('email')"
+                         required />
             </div>
 
-            <!-- Password -->
             <div class="mt-4">
                 <x-label for="password" :value="__('Password')" />
-
-                <x-input id="password" class="block mt-1 w-full"
-                                type="password"
-                                name="password"
-                                required autocomplete="new-password" />
+                <x-input id="password"
+                         class="block mt-1 w-full"
+                         type="password"
+                         name="password"
+                         required autocomplete="new-password" />
             </div>
 
-            <!-- Confirm Password -->
             <div class="mt-4">
                 <x-label for="password_confirmation" :value="__('Confirm Password')" />
-
-                <x-input id="password_confirmation" class="block mt-1 w-full"
-                                type="password"
-                                name="password_confirmation" required />
+                <x-input id="password_confirmation"
+                         class="block mt-1 w-full"
+                         type="password"
+                         name="password_confirmation"
+                         required />
             </div>
 
-            <div class="flex items-center justify-end mt-4">
-                <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('login') }}">
+            <div class="mt-4">
+                <x-label for="role" :value="__('Register as')" />
+                <div class="flex space-x-4 mt-2">
+                    <label class="inline-flex items-center">
+                        <input type="radio"
+                               name="role"
+                               value="customer"
+                               class="form-radio text-indigo-600"
+                               {{ old('role', 'customer') === 'customer' ? 'checked' : '' }}>
+                        <span class="ml-2">Customer</span>
+                    </label>
+
+                    <label class="inline-flex items-center">
+                        <input type="radio"
+                               name="role"
+                               value="admin"
+                               class="form-radio text-indigo-600"
+                               {{ old('role') === 'admin' ? 'checked' : '' }}>
+                        <span class="ml-2">Employee</span>
+                    </label>
+                </div>
+                @error('role')
+                    <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <div class="flex items-center justify-end mt-6">
+                <a class="underline text-sm text-gray-600 hover:text-gray-900"
+                   href="{{ route('login') }}">
                     {{ __('Already registered?') }}
                 </a>
 
