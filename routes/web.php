@@ -25,8 +25,7 @@ Route::post('/logout', function () {
 Route::middleware(['auth'])->group(function () {
     // Customer dashboard
     Route::get('/customer/dashboard', [CustomerController::class, 'dashboard'])
-    ->middleware(['auth'])
-    ->name('dashboard');
+         ->name('dashboard');
 
     // Browse services
     Route::get('/services', [ServiceController::class, 'index'])
@@ -44,7 +43,7 @@ Route::middleware(['auth'])->group(function () {
 });
 
 // Admin area (only role=admin)
-Route::middleware(['auth','admin'])->prefix('admin')->group(function () {
+Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('/dashboard', [AdminController::class, 'dashboard'])
          ->name('admin.dashboard');
 
@@ -52,7 +51,7 @@ Route::middleware(['auth','admin'])->prefix('admin')->group(function () {
     Route::resource('services', ServiceController::class)
          ->except(['show']);
     Route::resource('appointments', AppointmentController::class)
-         ->except(['create','store','show','edit','update']);
+         ->except(['create', 'store', 'show', 'edit', 'update']);
     Route::resource('customers', CustomerController::class)
          ->except(['show']);
 });

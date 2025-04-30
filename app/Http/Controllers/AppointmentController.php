@@ -6,16 +6,15 @@ use App\Models\Appointment;
 use App\Models\Service;
 use Illuminate\Http\Request;
 
+
 class AppointmentController extends Controller
 {
-    // Customer: Show booking form
     public function create()
     {
         $services = Service::all();
         return view('appointments.create', compact('services'));
     }
 
-    // Customer: Store booking
     public function store(Request $request)
     {
         $request->validate([

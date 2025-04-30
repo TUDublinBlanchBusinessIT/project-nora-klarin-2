@@ -12,13 +12,16 @@ class Appointment extends Model
 {
     use HasFactory;
 
+    
+    protected $fillable = ['service_id', 'appointment_date', 'user_id'];
+
     public function user()
     {
-        return $this->belongsTo(User::class);  
+        return $this->belongsTo(User::class);
     }
 
     public function service()
     {
-        return $this->belongsTo(Service::class);  
-}
+        return $this->belongsTo(Service::class);
+    }    
 }
