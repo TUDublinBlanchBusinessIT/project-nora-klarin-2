@@ -30,10 +30,10 @@ Route::middleware(['auth'])->group(function () {
          ->name('services.index');
 
     
-    Route::get('/appointments/create', [AppointmentController::class, 'create'])
-         ->name('appointments.create');
-    Route::post('/appointments', [AppointmentController::class, 'store'])
-         ->name('appointments.store');
+    Route::get('/appointments/create', [AppointmentController::class, 'create'])->name('appointments.create');
+
+    Route::post('/appointments', [AppointmentController::class, 'store'])->name('appointments.store');
+
 
     
     Route::get('/my-appointments', [AppointmentController::class, 'myAppointments'])

@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;    
 use App\Models\Service;
+use App\Models\Technician;
 
 
 class Appointment extends Model
@@ -13,7 +14,13 @@ class Appointment extends Model
     use HasFactory;
 
     
-    protected $fillable = ['service_id', 'appointment_date', 'user_id'];
+    protected $fillable = [
+        'user_id',
+        'service_id',
+        'appointment_date',
+        'technician_id',
+        'notes',
+    ];
 
     public function user()
     {

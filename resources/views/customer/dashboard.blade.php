@@ -29,28 +29,27 @@
     </div>
 
     <h2 class="mb-3">Your Past Appointments</h2>
-    <div class="card mb-4">
-        <div class="card-body">
-            @if($past->isEmpty())
-                <p>You have no past appointments yet.</p>
-            @else
-                <ul class="list-group list-group-flush">
-                    @foreach($past as $appt)
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <div>
-                                <strong>{{ $appt->service->name }}</strong>
-                                <span class="text-muted">
-                                    on {{ \Carbon\Carbon::parse($appt->appointment_date)->format('d M Y, H:i') }}
-                                </span>
-                            </div>
-                            <div>
-                                Technician: <em>{{ $appt->technician ? $appt->technician->name : 'No preference' }}</em>
-                            </div>
-                        </li>
-                    @endforeach
-                </ul>
-            @endif
-        </div>
+<div class="card mb-4">
+    <div class="card-body">
+        @if($past->isEmpty())
+            <p>You have no past appointments yet.</p>
+        @else
+            <ul class="list-group list-group-flush">
+                @foreach($past as $appt)
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                            <strong>{{ $appt->service->name }}</strong>
+                            <span class="text-muted">
+                                on {{ \Carbon\Carbon::parse($appt->appointment_date)->format('d M Y, H:i') }}
+                            </span>
+                        </div>
+                        <div>
+                            Technician: <em>{{ $appt->technician ? $appt->technician->name : 'No preference' }}</em>
+                        </div>
+                    </li>
+                @endforeach
+            </ul>
+        @endif
     </div>
 </div>
 @endsection

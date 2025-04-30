@@ -10,4 +10,9 @@ class Technician extends Model
     use HasFactory;
     protected $fillable = ['name', 'email', 'phone'];
 
+    public function appointments()
+    {
+        return $this->hasMany(Appointment::class);
+    }
+
 }

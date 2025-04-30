@@ -7,7 +7,7 @@ use App\Models\Appointment;
 use App\Models\Service;
 use App\Models\User;
 use Carbon\Carbon;
-
+use App\Models\Technician;
 
 class CustomerController extends Controller
 {
@@ -16,19 +16,20 @@ class CustomerController extends Controller
         $user = auth()->user();
         $now = Carbon::now('Europe/Dublin');
 
-        $upcoming = Appointment::where('user_id', auth()->id())
-            ->where('appointment_date', '>', $now) // strictly in the future
-            ->orderBy('appointment_date', 'asc')
-            ->get();
-
-            $past = Appointment::where('user_id', auth()->id())
-            ->where('appointment_date', '<=', $now) // in the past or exactly now
-            ->orderBy('appointment_date', 'desc')
-            ->get();
-        $services = Service::all(); 
-
-    
-        return view('customer.dashboard', compact('upcoming', 'services','past'));
+        $upcoming = Appointment::with('service', 'technician')
+        ->where('user_id', auth()->id())
+        ->where('appointment_date', '>=', now())
+        ->orderBy('appointment_date')
+        ->get();
+        
+        $past = Appointment::with('service', 'technician')
+        ->where('user_id', auth()->id())
+        ->where('appointment_date', '<', now())
+        ->orderByDesc('appointment_date')
+        ->get();
+          
+        $technicians = Technician::all(); 
+        return view('customer.dashboard', compact('upcoming','past', 'technicians'));
     }
 
     public function index()

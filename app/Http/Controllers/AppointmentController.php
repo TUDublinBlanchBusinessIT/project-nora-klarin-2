@@ -20,23 +20,25 @@ class AppointmentController extends Controller
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
+        $data = $request->validate([
             'service_id'       => 'required|exists:services,id',
             'appointment_date' => 'required|date|after:now',
             'technician_id'    => 'nullable|exists:technicians,id',
+            'notes'            => 'nullable|string|max:500',
         ]);
     
-        auth()->user()->appointments()->create([
-            'service_id'       => $validated['service_id'],
-            'appointment_date' => $validated['appointment_date'],
-            'technician_id'    => $validated['technician_id'] ?? null, // optional
+        Appointment::create([
+            'user_id'          => auth()->id(),
+            'service_id'       => $data['service_id'],
+            'appointment_date' => $data['appointment_date'],
+            'technician_id'    => $data['technician_id'] ?? null,
+            'notes'            => $data['notes'] ?? null,
         ]);
     
-        return redirect()->route('appointments.mine')
-                         ->with('success', 'Appointment booked!');
+        return redirect()->route('appointments.mine')->with('success','Appointment booked!');
     }
     
-
+    
     public function myAppointments()
     {
         $appointments = auth()->user()->appointments()
@@ -84,4 +86,24 @@ class AppointmentController extends Controller
         $appointment->delete();
         return back()->with('success', 'Appointment removed.');
     }
+    public function dashboard()
+{
+    $user = auth()->user();
+
+    $upcoming = Appointment::with('service', 'technician')
+        ->where('user_id', auth()->id())
+        ->where('appointment_date', '>=', now())
+        ->orderBy('appointment_date')
+        ->get();
+    
+    $past = Appointment::with('service', 'technician')
+        ->where('user_id', auth()->id())
+        ->where('appointment_date', '<', now())
+        ->orderByDesc('appointment_date')
+        ->get();
+    
+    $technicians = Technician::all(); 
+
+    return view('customer.dashboard', compact('upcoming', 'past', 'technicians'));  // <-- technicians not technician
+}
 }

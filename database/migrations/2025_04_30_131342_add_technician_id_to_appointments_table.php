@@ -14,10 +14,10 @@ class AddTechnicianIdToAppointmentsTable extends Migration
     public function up()
     {
         Schema::table('appointments', function (Blueprint $table) {
-            $table->foreignId('technician_id')->nullable()->constrained()->nullOnDelete();
+            $table->foreignId('technician_id')->nullable()->constrained('technicians');
+            $table->text('notes')->nullable();
         });
     }
-    
 
     /**
      * Reverse the migrations.
