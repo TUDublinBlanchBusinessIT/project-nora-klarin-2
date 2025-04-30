@@ -11,7 +11,6 @@ class CartController extends Controller
     {
         $product = Product::findOrFail($id);
         
-        // Example: simple session cart logic (we will improve later)
         $cart = session()->get('cart', []);
 
         if (isset($cart[$id])) {
@@ -29,5 +28,36 @@ class CartController extends Controller
 
         return redirect()->back()->with('success', 'Product added to cart!');
     }
+
+    public function viewCart()
+    {
+        $cart = session()->get('cart', []); // Get cart from session
+        $detailedCart = [];
+    
+        // Process the cart to include product details and subtotal
+        foreach ($cart as $productId => $item) {
+            $product = Product::find($productId); // Get product by id
+            
+            if ($product) {
+                $item['name'] = $product->name;
+                $item['image'] = $product->image;
+                // Ensure price is a float and quantity is an integer
+                $item['price'] = (float) $product->price; // Cast price to float
+                $item['quantity'] = (int) $item['quantity']; // Cast quantity to integer
+                $item['subtotal'] = $item['quantity'] * $item['price']; // Calculate subtotal
+                $detailedCart[] = $item;
+            }
+        }
+    
+        // Calculate total of all items
+        $total = array_sum(array_column($detailedCart, 'subtotal'));
+    
+        // Log the data to check for type issues
+        \Log::info('Cart details', ['cart' => $cart, 'detailedCart' => $detailedCart, 'total' => $total]);
+    
+        return view('cart.view', compact('detailedCart', 'total'));
+    }
+    
+    
 }
 

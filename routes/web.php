@@ -59,4 +59,12 @@ Route::get('/product/displaygrid', [ProductController::class, 'displayGrid'])->n
 
 Route::post('/cart/add/{id}', [CartController::class, 'add'])->name('cart.add');
 
+Route::get('cart', [ProductController::class, 'viewCart'])->name('cart.view');
+
+Route::get('product/emptycart', [ProductController::class, 'emptycart'])->name('products.emptycart');
+
+
+
+
+
 

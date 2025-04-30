@@ -12,6 +12,10 @@ $cart_count = $cart ? array_sum(array_column($cart, 'quantity')) : 0;
 <div class="alert alert-info">
     <strong>Cart:</strong> You have {{ $cart_count }} item(s) in your cart.
 </div>
+<div class="mb-3">
+    <a href="{{ route('cart.view') }}" class="btn btn-success">View Cart</a>
+</div>
+
 
 
     <div class='d-flex flex-wrap align-content-start bg-light'> 
@@ -41,5 +45,9 @@ $cart_count = $cart ? array_sum(array_column($cart, 'quantity')) : 0;
     </div>
 
 </div>
-
+<script>
+    $('#emptycart').click(function(){
+    window.location.href = "{{ route('products.emptycart') }}";
+});
+</script>
 @endsection
