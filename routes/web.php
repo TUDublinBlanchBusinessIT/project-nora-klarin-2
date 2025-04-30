@@ -8,6 +8,8 @@ use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\TechnicianController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\ProductController;
 
 Route::get('/', fn() => view('welcome'))->name('home');
 
@@ -52,5 +54,9 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
 });
 
 Route::post('/reviews', [ReviewController::class, 'store'])->name('reviews.store');
+
+Route::get('/product/displaygrid', [ProductController::class, 'displayGrid'])->name('products.displaygrid');
+
+Route::post('/cart/add/{id}', [CartController::class, 'add'])->name('cart.add');
 
 
