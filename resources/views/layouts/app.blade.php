@@ -31,7 +31,7 @@
 
                         @if(Auth::user()->role == 'admin')
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('admin.dashboard') }}">Admin Dashboard</a>
+                                <a class="nav-link" href="{{ route('admin.dashboard') }}">Dashboard</a>
                             </li>
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -40,8 +40,8 @@
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                     <li><a class="dropdown-item" href="{{ route('technicians.index') }}">Manage Technicians</a></li>
                                     <li><a class="dropdown-item" href="{{ route('appointments.index') }}">Manage Appointments</a></li>
-                                    <li><a class="dropdown-item" href="{{ route('customers.index') }}">Manage Customers</a></li>
-                                    <a class="nav-link" href="{{ route('services.index') }}">Services</a>
+                                    <li><a class="dropdown-item" href="{{ route('services.index') }}">Manage Services</a></li>
+                                    <a class="nav-link" href="{{ route('customers.index') }}">Customers</a>
                                 </ul>
                             </li>
                         @endif

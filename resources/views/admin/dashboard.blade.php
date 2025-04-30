@@ -1,30 +1,58 @@
 @extends('layouts.app')
 
 @section('content')
-<h1>Admin Dashboard</h1>
+<div class="container my-5">
+    <h1 class="mb-4">Admin Dashboard</h1>
 
-<ul>
-  <li>Total Appointments: {{ $appointmentsCount }}</li>
-  <li>Total Customers: {{ $customersCount }}</li>
-  <li>Total Services: {{ $servicesCount }}</li>
-</ul>
+    <div class="row mb-4">
+        <!-- Total Appointments Card -->
+        <div class="col-md-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title">Total Appointments</h5>
+                    <p class="card-text">{{ $appointmentsCount }}</p>
+                </div>
+            </div>
+        </div>
+        <!-- Total Customers Card -->
+        <div class="col-md-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title">Total Customers</h5>
+                    <p class="card-text">{{ $customersCount }}</p>
+                </div>
+            </div>
+        </div>
+        <!-- Total Services Card -->
+        <div class="col-md-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title">Total Services</h5>
+                    <p class="card-text">{{ $servicesCount }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
 
-<div class="mb-4">
-  <a href="{{ route('appointments.index') }}" class="btn btn-secondary">
-    Manage All Appointments
-  </a>
+    <h2 class="mb-4">Next 5 Upcoming Appointments</h2>
+<div class="table-responsive">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Customer</th>
+        <th>Service</th>
+        <th>Date & Time</th>
+      </tr>
+    </thead>
+    <tbody>
+      @foreach($upcomingAppointments as $appt)
+        <tr>
+          <td>{{ $appt->user->name }}</td>
+          <td>{{ $appt->service->name }}</td>
+          <td>{{ \Carbon\Carbon::parse($appt->appointment_date)->format('d M Y, H:i') }}</td>
+        </tr>
+      @endforeach
+    </tbody>
+  </table>
 </div>
-
-<a class="nav-link" href="{{ route('technicians.index') }}">Manage Technicians</a>
-
-<h2>Latest 5 Appointments</h2>
-<ul>
-  @foreach($latestAppointments as $appt)
-    <li>
-      {{ $appt->user->name }}
-      booked {{ $appt->service->name }}
-      on {{ \Carbon\Carbon::parse($appt->appointment_date)->format('d M Y, H:i') }}
-    </li>
-  @endforeach
-</ul>
 @endsection

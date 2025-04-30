@@ -13,13 +13,14 @@ class AdminController extends Controller
         $appointmentsCount = Appointment::count();
         $customersCount    = User::where('role','customer')->count();
         $servicesCount     = Service::count();
-        $latestAppointments= Appointment::with('user','service')
-                                         ->latest()
-                                         ->take(5)
-                                         ->get();
+        $upcomingAppointments = Appointment::with(['user','service'])
+            ->where('appointment_date', '>=', now())
+            ->orderBy('appointment_date', 'asc')
+            ->take(5)
+            ->get();
 
         return view('admin.dashboard', compact(
-            'appointmentsCount','customersCount','servicesCount','latestAppointments'
+            'appointmentsCount','customersCount','servicesCount','upcomingAppointments'
         ));
     }
 }
