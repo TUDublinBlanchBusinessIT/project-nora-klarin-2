@@ -35,7 +35,7 @@ class AppointmentController extends Controller
             'notes'            => $data['notes'] ?? null,
         ]);
     
-        return redirect()->route('appointments.mine')->with('success','Appointment booked!');
+        return redirect()->route('dashboard')->with('success','Appointment booked!');
     }
     
     
@@ -112,6 +112,7 @@ class AppointmentController extends Controller
     
     $technicians = Technician::all(); 
 
-    return view('customer.dashboard', compact('upcoming', 'past', 'technicians'));  // <-- technicians not technician
+    return view('customer.dashboard', compact('upcoming', 'past', 'technicians')); 
 }
+
 }
