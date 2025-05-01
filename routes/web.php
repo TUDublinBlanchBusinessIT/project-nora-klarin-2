@@ -10,6 +10,8 @@ use App\Http\Controllers\TechnicianController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CalendarController;
+
 
 Route::get('/', fn() => view('welcome'))->name('home');
 
@@ -54,6 +56,14 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
 });
 
 Route::post('/reviews', [ReviewController::class, 'store'])->name('reviews.store');
+
+Route::get('/calendar/json','App\Http\Controllers\CalendarController@json')->name('calendar.json');
+
+Route::get('/calendar/display', 'App\Http\Controllers\CalendarController@display')->name('calendar.display');
+
+
+
+
 
 
 
